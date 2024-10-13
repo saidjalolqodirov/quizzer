@@ -6,6 +6,10 @@ spring:
     url: jdbc:postgresql://localhost:5432/quizzer
     username: postgres
     password: 123
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
 app:
   jjwt:
     secret: ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave512bitsKeySize

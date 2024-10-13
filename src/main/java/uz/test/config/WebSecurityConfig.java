@@ -1,43 +1,59 @@
 package uz.test.config;
 
+import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@AllArgsConstructor
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig {
 
-    public final AuthenticationFilter authenticationFilterBean;
+    public final AuthenticationFilter authenticationFilter;
 
-    public WebSecurityConfig(AuthenticationFilter authenticationFilterBean) {
-        this.authenticationFilterBean = authenticationFilterBean;
-    }
-
-    @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
-        final String[] authWhitelist = {
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        final String[] AUTH_WHITELIST = {
                 "/swagger-resources/**",
                 "/swagger-ui/**",
-                "/v3/**",
                 "/webjars/**",
-                "/auth/**"
         };
         httpSecurity
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers(authWhitelist).permitAll()
+                .antMatchers(AUTH_WHITELIST).permitAll()
                 .anyRequest().fullyAuthenticated()
-                .and().addFilterBefore(authenticationFilterBean, UsernamePasswordAuthenticationFilter.class)
+                .and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
+                .and().addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .headers().cacheControl();
+
+        return httpSecurity.build();
     }
 
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        return (request, response, authException) -> {
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        };
+    }
 }
