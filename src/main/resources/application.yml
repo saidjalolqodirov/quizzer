@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: quizzer
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/quizzer
+    username: postgres
+    password: 123
+app:
+  jjwt:
+    secret: ThisIsSecretForJWTHS512SignatureAlgorithmThatMUSTHave512bitsKeySize
+    access_expiration: 86400
+    refresh_expiration: 2592000
