@@ -3,18 +3,15 @@ package uz.test.users;
 import lombok.Getter;
 import lombok.Setter;
 import uz.test.constants.RoleEnum;
+import uz.test.generic.GenericAuditingEntity;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "users")
-public class UserEntity {
-    @Id
-    @GeneratedValue
-    private UUID id;
+public class UserEntity extends GenericAuditingEntity {
 
     @Enumerated(EnumType.STRING)
     private RoleEnum role;

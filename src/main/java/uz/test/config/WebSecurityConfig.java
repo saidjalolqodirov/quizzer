@@ -28,8 +28,13 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         final String[] AUTH_WHITELIST = {
                 "/swagger-resources/**",
+                "/swagger-ui.html",
                 "/swagger-ui/**",
+                "/api/v1/auth/**",
+                "/v3/**",
                 "/webjars/**",
+                "/webjars/**",
+                "/engine-rest/**"
         };
         httpSecurity
                 .csrf().disable()
