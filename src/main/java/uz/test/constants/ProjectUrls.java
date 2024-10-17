@@ -13,4 +13,11 @@ public interface ProjectUrls {
     String API_V1_SUBJECT_DELETE = API_V1_SUBJECT + "/delete";
     String API_V1_SUBJECT_GET = API_V1_SUBJECT + "/get";
     String API_V1_SUBJECT_LIST = API_V1_SUBJECT + "/list";
+
+    String API_V1_BLOCK_TEST = API_V1 + "/block_test";
+    String API_V1_BLOCK_TEST_CREATE = API_V1_BLOCK_TEST + "/create";
+    String API_V1_BLOCK_TEST_UPDATE = API_V1_BLOCK_TEST + "/update";
+    String API_V1_BLOCK_TEST_DELETE = API_V1_BLOCK_TEST + "/delete";
+    String API_V1_BLOCK_TEST_LIST = API_V1_BLOCK_TEST + "/list";
+    String API_V1_BLOCK_TEST_GET = API_V1_BLOCK_TEST + "/get";
 }
