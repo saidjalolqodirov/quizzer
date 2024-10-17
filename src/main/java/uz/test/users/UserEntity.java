@@ -1,16 +1,21 @@
 package uz.test.users;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import uz.test.constants.RoleEnum;
 import uz.test.generic.GenericAuditingEntity;
 
 import javax.persistence.*;
 
-@Getter
-@Setter
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "users")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@SQLDelete(sql = "update users set deleted = 'true' where id = ?")
+@Where(clause = "deleted = 'false'")
 public class UserEntity extends GenericAuditingEntity {
 
     @Enumerated(EnumType.STRING)

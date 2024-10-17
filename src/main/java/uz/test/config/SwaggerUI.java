@@ -11,15 +11,21 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class SwaggerUI implements WebMvcConfigurer {
+    public final static String SECURITY_SCHEMA_BEARER_AUTH = "bearerAuth";
 
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
                 .addServersItem(
-                        new Server().url("/")
+                        new Server().url("/").description("Base application")
                 )
                 .components(new Components()
-                        .addSecuritySchemes("bearerAuth", new SecurityScheme().type(SecurityScheme.Type.HTTP).bearerFormat("JWT").scheme("bearer"))
+                        .addSecuritySchemes("bearerAuth",
+                                new SecurityScheme()
+                                        .type(SecurityScheme.Type.HTTP)
+                                        .bearerFormat("JWT")
+                                        .scheme("bearer"))
+
                 )
                 .info(new Info()
                         .title("Quizzer")
